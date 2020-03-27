@@ -1,0 +1,7 @@
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=postgres
+POSTGRES_DB=postgres
+DB_NAME=techarchdb
+DB_USER=techarch
+DB_PASSWORD=techarch
+DB_HOST=127.0.0.1
