@@ -170,4 +170,6 @@ insert into director_pref(user_id, director_id) (
     ) select * from cte
 );
 
+delete table temp_movies;
+delete table temp_mov;
 ";
