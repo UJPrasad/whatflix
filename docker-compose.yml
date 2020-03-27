@@ -1,0 +1,40 @@
+version: "3"
+services:
+  web:
+    container_name: wf
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: whatflix
+    links:
+      - db
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=postgres
+      - DB_NAME=techarchdb
+      - DB_USER=techarch
+      - DB_PASSWORD=techarch
+      - DB_HOST=db
+    ports:
+      - "3000:3000"
+    networks:
+      - web
+  db:
+    container_name: db
+    image: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      PGDATA: /data/postgres
+    volumes:
+       - postgres:/data/postgres
+    ports:
+      - "5432:5432"
+    networks:
+      - web
+    restart: unless-stopped
+volumes:
+  postgres:
+networks:
+  web:

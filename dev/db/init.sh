@@ -4,7 +4,7 @@ source .env
 
 set -e
 
-psql --username "$POSTGRES_USER" --dbname "$POSTGRES_DB" <<-EOSQL
+psql -h "$DB_HOST" --username "$POSTGRES_USER" --dbname "$POSTGRES_DB" <<-EOSQL
   do
   \$body\$
   declare
@@ -25,7 +25,7 @@ psql --username "$POSTGRES_USER" --dbname "$POSTGRES_DB" <<-EOSQL
   GRANT ALL PRIVILEGES ON DATABASE ${DB_NAME} TO ${DB_USER};
 EOSQL
 
-psql --username "$POSTGRES_USER" --dbname "$DB_NAME" <<-EOSQL
+psql -h "$DB_HOST" --username "$POSTGRES_USER" --dbname "$DB_NAME" <<-EOSQL
   CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
   create extension ltree;
 EOSQL

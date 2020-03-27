@@ -3,11 +3,11 @@
 set -e
 source .env
 
-psql -U ${DB_USER} -d ${DB_NAME} -h ${DB_HOST} -f dev/db/drop-tables.sql
+psql -h "$DB_HOST" -U ${DB_USER} -d ${DB_NAME} -h ${DB_HOST} -f dev/db/drop-tables.sql
 
-psql -U ${DB_USER} -d ${DB_NAME} -h ${DB_HOST} -f sql/master-schema.sql
+psql -h "$DB_HOST" -U ${DB_USER} -d ${DB_NAME} -h ${DB_HOST} -f sql/master-schema.sql
 
-psql -U ${DB_USER} -d ${DB_NAME}  -h ${DB_HOST} -c "
+psql -h "$DB_HOST" -U ${DB_USER} -d ${DB_NAME}  -h ${DB_HOST} -c "
 
 create table temp_movies(
     movie_id bigint primary key,
@@ -41,14 +41,14 @@ create table temp_mov(
 
 ";
 
-psql -U ${DB_USER} -d ${DB_NAME}  -h ${DB_HOST} -c "\copy temp_movies(
+psql -h "$DB_HOST" -U ${DB_USER} -d ${DB_NAME}  -h ${DB_HOST} -c "\copy temp_movies(
     movie_id, 
     title, 
     cas, 
     crew
 ) from './dev/data/tmdb_5000_credits.csv' delimiter ',' csv header";
 
-psql -U ${DB_USER} -d ${DB_NAME}  -h ${DB_HOST} -c "\copy temp_mov(
+psql -h "$DB_HOST" -U ${DB_USER} -d ${DB_NAME}  -h ${DB_HOST} -c "\copy temp_mov(
     budget,
     genres,
     homepage,
@@ -71,7 +71,7 @@ psql -U ${DB_USER} -d ${DB_NAME}  -h ${DB_HOST} -c "\copy temp_mov(
     v_count
 ) from './dev/data/tmdb_5000_movies.csv' delimiter ',' csv header";
 
-psql -U ${DB_USER} -d ${DB_NAME}  -h ${DB_HOST} -c "insert into movies(
+psql -h "$DB_HOST" -U ${DB_USER} -d ${DB_NAME}  -h ${DB_HOST} -c "insert into movies(
     movie_id, 
     title, 
     language_id) 
@@ -81,7 +81,7 @@ psql -U ${DB_USER} -d ${DB_NAME}  -h ${DB_HOST} -c "insert into movies(
 
 node dev/db/refresh.js
 
-psql -U ${DB_USER} -d ${DB_NAME}  -h ${DB_HOST} -c "
+psql -h "$DB_HOST" -U ${DB_USER} -d ${DB_NAME}  -h ${DB_HOST} -c "
 
 insert into language_pref(user_id, language_code) (
     with cte as(
